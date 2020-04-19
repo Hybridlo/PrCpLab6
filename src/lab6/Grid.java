@@ -46,6 +46,14 @@ public class Grid {
         }
     }
 
+    void clearGrid() {
+        for (List<Cell> rowCells : cells) {
+            for (Cell cell : rowCells) {
+                cell.clearState();
+            }
+        }
+    }
+
     List<Cell> get(int i) {
         return cells.get(i);
     }

@@ -28,20 +28,38 @@ public class WorkerThread implements Runnable {
             for (int i = startX; i < startX + coverLength || i < grid.size(); i++) {
                 for (int j = startY; j < startY + coverLength || j < grid.size(); j++) {
                     currCell = grid.get(i).get(j);
-                    int neighbourAmount = currCell.aliveNeighbours();
+                    int[] neighbourAmount = currCell.aliveNeighbours();
 
                     if (currCell.state != 0) {
-                        if (neighbourAmount < 2 || neighbourAmount > 3) {
+                        if (neighbourAmount[currCell.state - 1] < 2 || neighbourAmount[currCell.state - 1] > 3) {
                             currCell.newState = 0;
+
                             synchronized (grid.changingCells) {
                                 grid.changingCells.add(currCell);
                             }
                         }
                     } else {
-                        if (neighbourAmount == 3) {
-                            currCell.newState = 1;
-                            synchronized (grid.changingCells) {
-                                grid.changingCells.add(currCell);
+
+                        for (int k = 0; k < neighbourAmount.length; k++) {
+                            boolean isAnotherFaction = false;
+
+                            if (neighbourAmount[k] == 3) {
+                                for (int l = k + 1; l < neighbourAmount.length; l++) {
+                                    if (neighbourAmount[l] == 3) {
+                                        isAnotherFaction = true;    //if 2 factions can birth new cell, it doesn't birth
+                                        break;
+                                    }
+                                }
+
+                                if (isAnotherFaction) {
+                                    break;
+                                } else {
+                                    currCell.newState = k + 1;      //1 - blue, 2 - green, etc
+
+                                    synchronized (grid.changingCells) {
+                                        grid.changingCells.add(currCell);
+                                    }
+                                }
                             }
                         }
                     }
@@ -50,12 +68,18 @@ public class WorkerThread implements Runnable {
 
             try {
                 barrier.await();
-                Thread.sleep(333);
+                if (!once) {
+                    Thread.sleep(333);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             } catch (BrokenBarrierException e) {
                 e.printStackTrace();
+            }
+
+            if (once) {
+                break;
             }
         }
     }

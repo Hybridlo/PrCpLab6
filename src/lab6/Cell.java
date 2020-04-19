@@ -73,16 +73,21 @@ public class Cell {
         }
     }
 
-    int aliveNeighbours() {
-        int res = 0;
+    int[] aliveNeighbours() {
+        int[] res = {0, 0, 0, 0};
 
         for (Cell neighbour : neighbours) {
             if (neighbour.state != 0) {
-                res++;
+                res[neighbour.state - 1]++;     //neighbours in res[0] are blue neighbours, in res[1] - green, etc
             }
         }
 
         return res;
+    }
+
+    void clearState() {
+        state = 0;
+        changeColor();
     }
 
     void nextState() {

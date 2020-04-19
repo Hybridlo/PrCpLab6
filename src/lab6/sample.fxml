@@ -25,7 +25,7 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="clearAllButton" disable="true" layoutX="756.0" layoutY="683.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="229.0" text="Clear all">
+      <Button fx:id="clearAllButton" disable="true" layoutX="756.0" layoutY="683.0" mnemonicParsing="false" onAction="#clearGrid" prefHeight="51.0" prefWidth="229.0" text="Clear all">
          <font>
             <Font size="24.0" />
          </font>
@@ -35,7 +35,7 @@
             <Font size="36.0" />
          </font>
       </Button>
-      <Button fx:id="stepButton" disable="true" layoutX="756.0" layoutY="624.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="229.0" text="Step">
+      <Button fx:id="stepButton" disable="true" layoutX="756.0" layoutY="624.0" mnemonicParsing="false" onAction="#stepLife" prefHeight="51.0" prefWidth="229.0" text="Step">
          <font>
             <Font size="24.0" />
          </font>
